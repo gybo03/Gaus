@@ -16,30 +16,85 @@ public class CMatrix {
         numberOfEmptyRows = 0;
     }
 
+    public void addMatrix(double[][] matrixI) {
+        if (matrix.length == matrixI.length && matrix[0].length == matrixI[0].length) {
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    matrix[i][j] += matrixI[i][j];
+                }
+            }
+        }
+    }
+
+    public void subMatrix(double[][] matrixI) {
+        if (matrix.length == matrixI.length && matrix[0].length == matrixI[0].length) {
+            for (int i = 0; i < matrix.length; i++) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    matrix[i][j] -= matrixI[i][j];
+                }
+            }
+        }
+    }
+
+    public void multiplyScalarToMatrix(int scalar) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[i][j] *= scalar;
+            }
+        }
+    }
+
+
+    public double[][] multiplyMatrix(double[][] matrixI) {
+        if (matrix[0].length == matrixI.length) {
+
+            double[][] matrixO = new double[matrix.length][matrixI[0].length];
+
+            for (int i = 0; i < matrixO.length; i++) {
+                for (int j = 0; j < matrixO[0].length; j++) {
+                    int entry = 0;
+                    for (int k = 0; k < matrix[0].length; k++) {
+                        entry += matrix[i][k] * matrixI[k][j];
+                    }
+                    matrixO[i][j] = entry;
+                }
+            }
+
+            return matrixO;
+        }
+        return null;
+    }
+
+    public CMatrix powerOfMatrix(int power) {
+        CMatrix temp=new CMatrix(this.matrix,"temp");
 
 
 
-    //<editor-fold desc="THESE WORK">
+        return temp;
+    }
+
+    //<editor-fold desc="GAUS-JORDAN">
     private void makeEmptyRowsOnBottom() {
         int numberOfZeros = 0;
-        for (int i = 0; i < matrix.length-numberOfEmptyRows; i++) {
+        for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 if (matrix[i][j] == 0) {
                     numberOfZeros++;
-                }else{
-                    numberOfZeros=0;
+                } else {
+                    numberOfZeros = 0;
                     break;
                 }
             }
             if (numberOfZeros == matrix[0].length) {
-                switchRows(i, matrix.length - numberOfEmptyRows -1);
+                switchRows(i, matrix.length - numberOfEmptyRows - 1);
                 numberOfEmptyRows++;
             }
         }
     }
+
     public void gausJordan() {
         gaus();
-        for (int i = matrix.length - 1-numberOfEmptyRows; i >= 0; i--) {
+        for (int i = matrix.length - 1 - numberOfEmptyRows; i >= 0; i--) {
             makeNonZerosAboveLeadingOneZero(i);
         }
     }
@@ -66,7 +121,7 @@ public class CMatrix {
 
     public void gaus() {
         makeEmptyRowsOnBottom();
-        for (int i = 0; i < matrix.length-numberOfEmptyRows; i++) {
+        for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
             System.out.println(this);
             makeLeadingOneOnTop(i);
             System.out.println(this);
