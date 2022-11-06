@@ -1,17 +1,25 @@
 public class main {
     public static void main(String[] args) {
         //double[][] mA = {{0, 2, -7, -17},{1, 1, 2, 9} , {0, 3, -11, -27}};
-        //double[][] mA = {{0, 0, -2, 0, 7, 12},{0, 0, 0, 0, 0, 0}, {2, 4, -10, 6, 12, 28}, {2, 4, -5, 6, -5, -1}};
-    /*    double[][] mA = {{1, 2, 4}, {2, 6, 0}};
-        */
-        double[][] mB = {{3, -2}, {-1, 1}};
-        double[][] mA = {{3, -2}, {-1, 1}};
+        double[][] mA = {{0, 0, -2, 0, 7, 12}, {2, 4, -10, 6, 12, 28}, {2, 4, -5, 6, -5, -1}};
         CMatrix a = new CMatrix(mA, "A");
-        double[][] mC = a.multiplyMatrix(mB);
-        mC = a.multiplyMatrix(a.multiplyMatrix(mA));
 
-        CMatrix c = new CMatrix(mC,"C");
+        a.gausJordan();
+
+        /*a.makeNonZerosAboveLeadingOneZero(2);
         System.out.println(a);
-        System.out.println(c);
+        System.out.println(a.findNonZerosAboveLeadingOne(2,2));
+        a.makeNonZerosAboveLeadingOneZero(2);
+        System.out.println(a);*/
+
+        /*a.makeLeadingOneOnTop(0);
+        System.out.println(a);
+        a.makeLeadingOnesOne(0);
+        System.out.println(a);
+        a.makeNonZerosBeneathLeadingOneZeros(0);
+        System.out.println(a);
+        System.out.println(a.findNonZerosBeneathLeadingOne(0,0));
+        System.out.println(a.findLeftMostLeadingOne(0).getX()+" "+a.findLeftMostLeadingOne(0).getY());*/
+
     }
 }
