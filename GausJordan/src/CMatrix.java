@@ -39,7 +39,6 @@ public class CMatrix {
         }
     }
 
-
     public static CMatrix multiplyMatrix(CMatrix a, CMatrix b, String name) {
         if (a.matrix[0].length == b.matrix.length) {
 
@@ -67,54 +66,63 @@ public class CMatrix {
         }
         return temp;
     }
-    //</editor-fold>
 
-    //<editor-fold desc="GAUS-JORDAN">
-    private void makeEmptyRowsOnBottom() {
-        int numberOfZeros = 0;
-        for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                if (matrix[i][j] == 0) {
-                    numberOfZeros++;
-                } else {
-                    numberOfZeros = 0;
-                    break;
+    private static double[][] createIdentityMatrix(int length){
+        double[][] output =new double[length][length];
+        for (int i = 0; i < length; i++) {
+            output[i][i]=1;
+        }
+        return output;
+    }
+
+    public static CMatrix addIdentityMatrix(CMatrix a,String name){
+        double[][] matrixO=new  double[a.matrix.length][2*a.matrix.length];
+        double[][] identityMatrix=createIdentityMatrix(a.matrix.length);
+        for (int i = 0; i < matrixO.length; i++) {
+            for (int j = 0; j < matrixO[0].length; j++) {
+                if (j<a.matrix.length){
+                    matrixO[i][j]=a.matrix[i][j];
+                }else{
+                    matrixO[i][j]=identityMatrix[i][j-a.matrix.length];
                 }
             }
-            if (numberOfZeros == matrix[0].length) {
-                switchRows(i, matrix.length - numberOfEmptyRows - 1);
-                numberOfEmptyRows++;
+        }
+        CMatrix temp=new CMatrix(matrixO,name);
+        return temp;
+    }
+
+    private static CMatrix makeTransposeMatrix(CMatrix a){
+        double[][] temp=new double[a.matrix.length][a.matrix.length];
+        for (int i = 0; i < temp.length; i++) {
+            for (int j = 0; j < temp.length; j++) {
+                temp[i][j]=a.matrix[j][i];
             }
         }
+        CMatrix output=new CMatrix(temp,"temp");
+        return output;
     }
 
-    public void gausJordan() {
-        gaus();
-        for (int i = matrix.length - 1 - numberOfEmptyRows; i >= 0; i--) {
-            makeNonZerosAboveLeadingOneZero(i);
-        }
-    }
+    /*public static  CMatrix makeAdjoinMatrix(CMatrix a){
 
-    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel) {
-        while (findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
-            rowOperation(
-                    subMatrixLevel,
-                    -matrix[findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
-                    findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
-            );
-            System.out.println(this);
-        }
-    }
+    }*/
 
-    public int findNonZerosAboveLeadingOne(int subMatrixLevel, int columnOfSubMatrixLevelLeadingOne) {
-        for (int i = subMatrixLevel - 1; i >= 0; i--) {
-            if (matrix[i][columnOfSubMatrixLevelLeadingOne] != 0) {
-                return i;
+    public static CMatrix invertedMatrix(CMatrix a,String name){
+        CMatrix input=CMatrix.addIdentityMatrix(a,name);
+        input.gausJordan();
+        double[][] temp=new double[a.matrix.length][a.matrix.length];
+        for (int i = 0; i < a.matrix.length; i++) {
+            for (int j = 0; j < a.matrix.length; j++) {
+                temp[i][j]=input.matrix[i][j+a.matrix.length];
             }
         }
-        return Integer.MAX_VALUE;
+        CMatrix output=new CMatrix(temp,name);
+        return output;
     }
 
+    //</editor-fold>
+
+
+    //<editor-fold desc="GAUS-JORDAN">
     public void gaus() {
         makeEmptyRowsOnBottom();
         for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
@@ -125,40 +133,14 @@ public class CMatrix {
             System.out.println(this);
             makeNonZerosBeneathLeadingOneZeros(i);
             System.out.println(this);
+            makeEmptyRowsOnBottom();
         }
     }
-
-    private Cordinates findLeadingOne(int row) {
-        for (int i = 0; i < matrix[0].length; i++) {
-            if (matrix[row][i] != 0) {
-                return new Cordinates(row, i);
-            }
-        }
-        return new Cordinates(-1, 0);
-    }
-
-    private void rowOperation(int sourceRow, double coefficient, int destinationRow) {
-        for (int i = 0; i < matrix[0].length; i++) {
-            matrix[destinationRow][i] += matrix[sourceRow][i] * coefficient;
-        }
-    }
-
-    private int findNonZerosBeneathLeadingOne(int subMatrixLevel, int colourOfLeadingOne) {
-        for (int i = subMatrixLevel + 1; i < matrix.length; i++) {
-            if (matrix[i][colourOfLeadingOne] != 0) {
-                return i;
-            }
-        }
-        return Integer.MAX_VALUE;
-    }
-
-    private void makeNonZerosBeneathLeadingOneZeros(int subMatrixLevel) {
-        while (findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
-            rowOperation(
-                    subMatrixLevel,
-                    -matrix[findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
-                    findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
-            );
+    public void gausJordan() {
+        gaus();
+        for (int i = matrix.length - 1 - numberOfEmptyRows; i >= 0; i--) {
+            makeNonZerosAboveLeadingOneZero(i);
+            makeEmptyRowsOnBottom();
         }
     }
 
@@ -186,12 +168,105 @@ public class CMatrix {
         }
     }
 
+    private Cordinates findLeadingOne(int row) {
+        for (int i = 0; i < matrix[0].length; i++) {
+            if (matrix[row][i] != 0) {
+                return new Cordinates(row, i);
+            }
+        }
+        return new Cordinates(-1, 0);
+    }
+
+    private void makeNonZerosBeneathLeadingOneZeros(int subMatrixLevel) {
+        while (findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
+            rowOperation(
+                    subMatrixLevel,
+                    -matrix[findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
+                    findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
+            );
+        }
+    }
+
+    private int findNonZerosBeneathLeadingOne(int subMatrixLevel, int colourOfLeadingOne) {
+        for (int i = subMatrixLevel + 1; i < matrix.length; i++) {
+            if (matrix[i][colourOfLeadingOne] != 0) {
+                return i;
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+
+
+
+
+
+    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel) {
+        while (findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
+            rowOperation(
+                    subMatrixLevel,
+                    -matrix[findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
+                    findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
+            );
+            System.out.println(this);
+        }
+    }
+
+    public int findNonZerosAboveLeadingOne(int subMatrixLevel, int columnOfSubMatrixLevelLeadingOne) {
+        for (int i = subMatrixLevel - 1; i >= 0; i--) {
+            if (matrix[i][columnOfSubMatrixLevelLeadingOne] != 0) {
+                return i;
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+
+
+
+
+
+
+    private void rowOperation(int sourceRow, double coefficient, int destinationRow) {
+        for (int i = 0; i < matrix[0].length; i++) {
+            matrix[destinationRow][i] += matrix[sourceRow][i] * coefficient;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
     private void switchRows(int source, int destination) {
         double[] temp = matrix[source];
         matrix[source] = matrix[destination];
         matrix[destination] = temp;
     }
 
+    private void makeEmptyRowsOnBottom() {
+        int numberOfZeros = 0;
+        for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    numberOfZeros++;
+                } else {
+                    numberOfZeros = 0;
+                    break;
+                }
+            }
+            if (numberOfZeros == matrix[0].length) {
+                switchRows(i, matrix.length - numberOfEmptyRows - 1);
+                numberOfEmptyRows++;
+            }
+        }
+    }
+    //</editor-fold>
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -207,5 +282,4 @@ public class CMatrix {
 
         return stringBuilder.toString();
     }
-    //</editor-fold>
 }
