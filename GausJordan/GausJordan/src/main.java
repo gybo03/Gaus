@@ -6,7 +6,7 @@ public class main {
 
         a.gausJordan();
 
-        /*a.makeNonZerosAboveLeadingOneZero(2);
+        /*a.makeNonZerosAboveLeadingOneZero(2); Na GitHabu
         System.out.println(a);
         System.out.println(a.findNonZerosAboveLeadingOne(2,2));
         a.makeNonZerosAboveLeadingOneZero(2);
