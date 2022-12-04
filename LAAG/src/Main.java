@@ -1,3 +1,4 @@
+import Matrix.Matrix;
 import Vector.Vector;
 
 public class Main {
@@ -9,6 +10,25 @@ public class Main {
         double[] tC3 = {1, 0};
         double[] tC4 = {0, -1};
 
+        double[][] mA = {{4, 0, 0, 1,0}, {3, 3, 3, 1,0}, {1, 2, 4, 2,3}, {9, 4, 6, 2,3}, {2, 2, 4, 2,3}};
+        //double[][] mA = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+        //double[][] mA = {{1, 0, 0 , -1}, {3, 1, 2, 2}, {1, 0, -2, 1}, {2, 0, 0, 1}};
+        //double[][] mA = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        //double[][] mA = {{1, 2, 3}, {-4, 5, 6}, {7, -8, 9}};
+        //double[][] mA = {{1, 2}, {3, 4}};
+
+
+        Matrix a = new Matrix("A", mA);
+        System.out.println(a);
+
+        System.out.println(a.findTheVectorWithMostZeros());
+        System.out.println(a.getDeterminant(mA));
+
+
+
+
+
+        /*
         Vector v = new Vector("v", iC, tC1);
         System.out.println(v);
         Vector w = new Vector("w", iC, tC2);
@@ -16,12 +36,12 @@ public class Main {
         Vector a= Vector.projectionOnOtherVector("a",v,w);
         System.out.println(a);
 
-        /*
         System.out.println(Math.cos(Math.PI));Vector w = Vector.multiplyVectorByScalar("-v",v,-1);
         System.out.println(w);
         Vector add = Vector.addVectors("add", v, w);
         System.out.println(add);
         Vector sub = Vector.subtractVectors("sub", v, w);
-        System.out.println(sub);*/
+        System.out.println(sub);
+        */
     }
 }
