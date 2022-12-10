@@ -1,14 +1,156 @@
+import AnaliticGeometry.*;
 import Matrix.Matrix;
 import Vector.Vector;
 
+
+
 public class Main {
     public static void main(String[] args) {
-        double[] iC = {0, 0, 0};
-        double[] tC1 = {2, -1, 3};
-        double[] tC2 = {4, -1, 2};
 
-        double[] tC3 = {1, 0};
-        double[] tC4 = {0, -1};
+        double[] zero = {0, 0, 0};
+        double[] a = {0, 0, -1.5};
+        double[] b = {1, 2, -2};
+        double[] c = {0, 0, 1.75};
+        double[] d = {2, 4, -4};
+
+        double[][] mA={{1,3,-2,-1},{2,-1,1,3}};
+        Matrix m=new Matrix("",mA);
+        //m.gausJordan(true);
+
+        Point point0 = new Point("0", zero);
+        Point point1 = new Point("a", a);
+        Point point2 = new Point("b", b);
+        Point point3 = new Point("c", c);
+        Point point4 = new Point("d", d);
+
+       // System.out.println(Point.distanceFromTwoPoints(point1,point3));
+
+        Vector vector1 = new Vector("vector1", point0, point2);
+        Vector vector2 = new Vector("vector2", point0, point4);
+
+        System.out.println(vector1);
+
+        Line line1=new Line("line1",point1,vector1);
+        Line line2=new Line("line2",point3,vector2);
+
+        System.out.println(line1);
+
+        Plane plane1 = new Plane("plane1", point1, vector1);
+        Plane plane2 = new Plane("plane2", point3, vector2);
+
+        System.out.println(plane1);
+        System.out.println(plane2);
+
+        System.out.println(Plane.distanceBetweenTwoPlanes(plane2, plane1));
+
+
+        //<editor-fold desc="commonPointBetweenLineAndPlane">
+        /*double[] zero = {0, 0, 0};
+        double[] a = {7, 7, 1};
+        double[] b = {2, -3, 6};
+        double[] c={2,6,-9};
+        double[] d={3,4,-4};
+
+        Point point0=new Point("0",zero);
+        Point point1 = new Point("a", a);
+        Point point2=new Point("b",b);
+        Point point3=new Point("c",c);
+        Point point4=new Point("d",d);
+
+        Vector vector1 = new Vector("vector1", point0, point2);
+        Vector vector2 = new Vector("vector2", point0, point4);
+
+        Line line1=new Line("line1",point3,vector2);
+
+        Plane plane1= new Plane("plane1",point1,vector1);
+
+        System.out.println(plane1);
+
+        System.out.println(line1);
+
+        System.out.println(Plane.commonPointBetweenLineAndPlane(line1,plane1));
+        *///</editor-fold>
+        //<editor-fold desc="distanceBetweenPointAndPlane">
+        /*double[] zero = {0, 0, 0};
+        double[] a = {7, 7, 1};
+        double[] b = {2, -3, 6};
+        double[] c={1,-4,-3};
+
+        Point point0=new Point("0",zero);
+        Point point1 = new Point("a", a);
+        Point point2=new Point("b",b);
+        Point point3=new Point("c",c);
+
+        Vector vector1 = new Vector("vector1", point0, point2);
+
+        Plane plane1= new Plane("plane1",point1,vector1);
+
+        System.out.println(plane1);
+
+        System.out.println(Plane.distanceBetweenPointAndPlane(point3,plane1));
+        *///</editor-fold>
+        //<editor-fold desc="plane.toSting">
+        /*double[] zero = {0, 0, 0};
+        double[] a = {2, 6, -9};
+        double[] b = {3, 4, -4};
+
+        Point point1 = new Point("a", a);
+        Point point2=new Point("b",b);
+
+        Vector vector1 = new Vector("vector1", zero, b);
+
+        Plane plane1= new Plane("plane1",point1,vector1);
+
+        System.out.println(plane1);
+        *///</editor-fold>
+        //<editor-fold desc="commonPointBetweenTwoLines">
+        /*double[] p0 = {0, 0, 0};
+        double[] p1 = {1, -4, 8};
+        double[] p2 = {5, 1, 8};
+        double[] v1 = {2, 1, -2};
+        double[] v2 = {1, -1, -3};
+
+        Point point1=new Point("point1",p1);
+        Point point2=new Point("point2",p2);
+        Vector vector1=new Vector("vector1",p0,v1);
+        Vector vector2=new Vector("vector2",p0,v2);
+        System.out.println(vector1);
+        System.out.println(vector2);
+        Line line1=new Line("line1",point1,vector1);
+        Line line2=new Line("line2",point2,vector2);
+        System.out.println(line1);
+        System.out.println(line2);
+        System.out.println(Line.commonPointBetweenTwoLines(line1,line2));*/
+        //</editor-fold>
+        //<editor-fold desc="distanceBetweenTwoLines">
+        /*double[] zero = {0, 0, 0};
+        double[] a = {2, 6, -9};
+        double[] b = {3, 4, -4};
+        double[] c = {-1, -2, 3};
+        double[] d = {2, -6, 1};
+
+        Point point1 = new Point("a", a);
+        Point point2 = new Point("c", c);
+
+        Vector vector1 = new Vector("vector1", zero, b);
+        Vector vector2 = new Vector("vector2", zero, d);
+
+        Line line1 = new Line("line1", point1, vector1);
+        Line line2 = new Line("line2", point2, vector2);
+
+        System.out.println(Line.distanceBetweenTwoLines(line1, line2));*/
+        //</editor-fold>
+
+        /*
+
+
+        Point p=new Point("p",tC1);
+        System.out.println(p);
+        Point q=new Point("q",tC2);
+        System.out.println(q);
+        System.out.println(Point.distanceFromTwoPoints(p,q));
+
+        System.out.println(line.isPointPartOfLine(point2));
 
         double[][] mA = {{4, 0, 0, 1,0}, {3, 3, 3, 1,0}, {1, 2, 4, 2,3}, {9, 4, 6, 2,3}, {2, 2, 4, 2,3}};
         //double[][] mA = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
@@ -17,6 +159,8 @@ public class Main {
         //double[][] mA = {{1, 2, 3}, {-4, 5, 6}, {7, -8, 9}};
         //double[][] mA = {{1, 2}, {3, 4}};
 
+        Vector v = new Vector("v", tC2, tC1);
+        System.out.println(v);
 
         Matrix a = new Matrix("A", mA);
         System.out.println(a);
@@ -25,14 +169,6 @@ public class Main {
         System.out.println(a.getDeterminant(mA));
 
 
-
-
-
-        /*
-        Vector v = new Vector("v", iC, tC1);
-        System.out.println(v);
-        Vector w = new Vector("w", iC, tC2);
-        System.out.println(w);
         Vector a= Vector.projectionOnOtherVector("a",v,w);
         System.out.println(a);
 

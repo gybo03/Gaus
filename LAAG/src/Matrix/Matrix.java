@@ -1,7 +1,5 @@
 package Matrix;
 
-import java.util.Arrays;
-
 public class Matrix {
     private double[][] matrix;
     private String name;
@@ -75,7 +73,29 @@ public class Matrix {
         }
         return maxCoordinate;
     }
-
+    public double[] returnLastColumn(){
+        double[] out=new double[matrix.length];
+        for (int i = 0; i < out.length; i++) {
+            out[i]=matrix[i][matrix.length-1];
+        }
+        if (!isMatrixConsistent()){
+            return null;
+        }
+        return out;
+    }
+    private boolean isMatrixConsistent(){
+        boolean itsAllZeros=true;
+        for (int i = 0; i < matrix[0].length-1; i++) {
+            if (matrix[matrix.length-1][i]!=0){
+                itsAllZeros=false;
+            }
+        }
+        if(itsAllZeros&&matrix[matrix.length-1][matrix[0].length-1]!=0){
+            return false;
+        } else {
+            return true;
+        }
+    }
     public double getDeterminant(double[][] matrix) {
         double determinant = 0;
         if (matrix.length == 2) {
@@ -112,7 +132,6 @@ public class Matrix {
                     }else{
                         x++;
                     }
-
                     if (x == matrix.length - 1) {
                         x = 0;
                     }
@@ -128,7 +147,6 @@ public class Matrix {
                         }else{
                             y++;
                         }
-
                         if (y == matrix.length - 1) {
                             y = 0;
                         }
@@ -137,10 +155,8 @@ public class Matrix {
                 }
             }
             column++;
-
-
         }
-        matrixIn3d(m);
+        //matrixIn3d(m);
         row = findTheVectorWithMostZeros().getX();
         column = findTheVectorWithMostZeros().getY();
         if (row==-1){
@@ -152,7 +168,6 @@ public class Matrix {
         if (column>row){
             //matrix=Matrix.makeTransposeMatrix("temp",new Matrix("temp",matrix)).matrix;
             row=column;
-            column=0;
         }
         for (int i = 0; i < m.length; i++) {
                 determinant += Math.pow(-1,row+i)*matrix[row][i] * getDeterminant(m[i]);
@@ -242,7 +257,7 @@ public class Matrix {
 
     public static Matrix invertedMatrix(String name, Matrix a) {
         Matrix input = Matrix.addIdentityMatrix(name, a);
-        input.gausJordan();
+        input.gausJordan(false);
         double[][] temp = new double[a.matrix.length][a.matrix.length];
         for (int i = 0; i < a.matrix.length; i++) {
             for (int j = 0; j < a.matrix.length; j++) {
@@ -257,24 +272,33 @@ public class Matrix {
 
 
     //<editor-fold desc="GAUS-JORDAN">
-    public void gaus() {
+    public void gaus(boolean ispis) {
         makeEmptyRowsOnBottom();
         for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
-            System.out.println(this);
+            if (ispis){
+                System.out.println(this);
+            }
+
             makeLeadingOneOnTop(i);
-            System.out.println(this);
+            if (ispis){
+                System.out.println(this);
+            }
             makeLeadingOnesOne(i);
-            System.out.println(this);
+            if (ispis){
+                System.out.println(this);
+            }
             makeNonZerosBeneathLeadingOneZeros(i);
-            System.out.println(this);
+            if (ispis){
+                System.out.println(this);
+            }
             makeEmptyRowsOnBottom();
         }
     }
 
-    public void gausJordan() {
-        gaus();
+    public void gausJordan(boolean ispis) {
+        gaus(ispis);
         for (int i = matrix.length - 1 - numberOfEmptyRows; i >= 0; i--) {
-            makeNonZerosAboveLeadingOneZero(i);
+            makeNonZerosAboveLeadingOneZero(i,ispis);
             makeEmptyRowsOnBottom();
         }
     }
@@ -332,14 +356,16 @@ public class Matrix {
     }
 
 
-    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel) {
+    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel,boolean ispis) {
         while (findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
             rowOperation(
                     subMatrixLevel,
                     -matrix[findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
                     findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
             );
-            System.out.println(this);
+            if (ispis){
+                System.out.println(this);
+            }
         }
     }
 
