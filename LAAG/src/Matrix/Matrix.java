@@ -73,10 +73,21 @@ public class Matrix {
         }
         return maxCoordinate;
     }
-    public double[] returnLastColumn(){
+    public int getNumOfRows(){
+        return matrix.length;
+    }
+    public int getNumOfColumns(){
+        return matrix[0].length;
+    }
+
+    public double[][] getMatrix() {
+        return matrix;
+    }
+
+    public double[] returnColumn(int column){
         double[] out=new double[matrix.length];
         for (int i = 0; i < out.length; i++) {
-            out[i]=matrix[i][matrix.length-1];
+            out[i]=matrix[i][column];
         }
         if (!isMatrixConsistent()){
             return null;
@@ -272,33 +283,33 @@ public class Matrix {
 
 
     //<editor-fold desc="GAUS-JORDAN">
-    public void gaus(boolean ispis) {
+    public void gaus(boolean printOutput) {
         makeEmptyRowsOnBottom();
         for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
-            if (ispis){
+            if (printOutput){
                 System.out.println(this);
             }
 
             makeLeadingOneOnTop(i);
-            if (ispis){
+            if (printOutput){
                 System.out.println(this);
             }
             makeLeadingOnesOne(i);
-            if (ispis){
+            if (printOutput){
                 System.out.println(this);
             }
             makeNonZerosBeneathLeadingOneZeros(i);
-            if (ispis){
+            if (printOutput){
                 System.out.println(this);
             }
             makeEmptyRowsOnBottom();
         }
     }
 
-    public void gausJordan(boolean ispis) {
-        gaus(ispis);
+    public void gausJordan(boolean printOutput) {
+        gaus(printOutput);
         for (int i = matrix.length - 1 - numberOfEmptyRows; i >= 0; i--) {
-            makeNonZerosAboveLeadingOneZero(i,ispis);
+            makeNonZerosAboveLeadingOneZero(i,printOutput);
             makeEmptyRowsOnBottom();
         }
     }
@@ -356,14 +367,14 @@ public class Matrix {
     }
 
 
-    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel,boolean ispis) {
+    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel,boolean printOutput) {
         while (findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
             rowOperation(
                     subMatrixLevel,
                     -matrix[findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
                     findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
             );
-            if (ispis){
+            if (printOutput){
                 System.out.println(this);
             }
         }

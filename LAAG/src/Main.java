@@ -7,15 +7,14 @@ import Vector.Vector;
 public class Main {
     public static void main(String[] args) {
 
-        double[] zero = {0, 0, 0};
-        double[] a = {0, 0, -1.5};
-        double[] b = {1, 2, -2};
-        double[] c = {0, 0, 1.75};
-        double[] d = {2, 4, -4};
+        //<editor-fold desc="commonLineBetweenTwoPlanes">
+        /*double[] zero = {0, 0, 0};
+        double[] a = {0, -9, 0};
+        double[] b = {0, 0, -4};
+        double[] c = {2, -1, 0};
+        double[] d = {1, -1, -1};
 
-        double[][] mA={{1,3,-2,-1},{2,-1,1,3}};
-        Matrix m=new Matrix("",mA);
-        //m.gausJordan(true);
+
 
         Point point0 = new Point("0", zero);
         Point point1 = new Point("a", a);
@@ -23,27 +22,40 @@ public class Main {
         Point point3 = new Point("c", c);
         Point point4 = new Point("d", d);
 
-       // System.out.println(Point.distanceFromTwoPoints(point1,point3));
-
-        Vector vector1 = new Vector("vector1", point0, point2);
+        Vector vector1 = new Vector("vector1", point0, point3);
         Vector vector2 = new Vector("vector2", point0, point4);
 
-        System.out.println(vector1);
-
-        Line line1=new Line("line1",point1,vector1);
-        Line line2=new Line("line2",point3,vector2);
-
-        System.out.println(line1);
-
         Plane plane1 = new Plane("plane1", point1, vector1);
-        Plane plane2 = new Plane("plane2", point3, vector2);
+        Plane plane2 = new Plane("plane2", point2, vector2);
 
         System.out.println(plane1);
         System.out.println(plane2);
 
+        System.out.println(Plane.commonLineBetweenTwoPlanes(plane1,plane2));
+        *///</editor-fold>
+        //<editor-fold desc="distanceBetweenTwoPlanes">
+        /*double[] zero = {0, 0, 0};
+        double[] a = {0, 0, -1.5};
+        double[] b = {1, 2, -2};
+        double[] c = {0, 0, -1.75};
+        double[] d = {2, 4, -4};
+
+
+
+        Point point0 = new Point("0", zero);
+        Point point1 = new Point("a", a);
+        Point point2 = new Point("b", b);
+        Point point3 = new Point("c", c);
+        Point point4 = new Point("d", d);
+
+        Vector vector1 = new Vector("vector1", point0, point2);
+        Vector vector2 = new Vector("vector2", point0, point4);
+
+        Plane plane1 = new Plane("plane1", point1, vector1);
+        Plane plane2 = new Plane("plane2", point3, vector2);
+
         System.out.println(Plane.distanceBetweenTwoPlanes(plane2, plane1));
-
-
+        *///</editor-fold>
         //<editor-fold desc="commonPointBetweenLineAndPlane">
         /*double[] zero = {0, 0, 0};
         double[] a = {7, 7, 1};
