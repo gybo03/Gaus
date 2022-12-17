@@ -153,6 +153,11 @@ public class Main {
         System.out.println(Line.distanceBetweenTwoLines(line1, line2));*/
         //</editor-fold>
 
+        double[][] mA = {{1, 0, 0 , -1}, {3, 1, 2, 2}, {1, 0, -2, 1}, {2, 0, 0, 1}};
+        Matrix m=new Matrix("m",mA);
+        System.out.println(m.getDeterminant(mA));
+        m.gaus(true);
+        ;
         /*
 
 
@@ -164,7 +169,7 @@ public class Main {
 
         System.out.println(line.isPointPartOfLine(point2));
 
-        double[][] mA = {{4, 0, 0, 1,0}, {3, 3, 3, 1,0}, {1, 2, 4, 2,3}, {9, 4, 6, 2,3}, {2, 2, 4, 2,3}};
+
         //double[][] mA = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
         //double[][] mA = {{1, 0, 0 , -1}, {3, 1, 2, 2}, {1, 0, -2, 1}, {2, 0, 0, 1}};
         //double[][] mA = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};

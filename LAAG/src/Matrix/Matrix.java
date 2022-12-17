@@ -167,7 +167,7 @@ public class Matrix {
             }
             column++;
         }
-        //matrixIn3d(m);
+        matrixIn3d(m);
         row = findTheVectorWithMostZeros().getX();
         column = findTheVectorWithMostZeros().getY();
         if (row==-1){
