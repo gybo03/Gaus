@@ -153,11 +153,13 @@ public class Main {
         System.out.println(Line.distanceBetweenTwoLines(line1, line2));*/
         //</editor-fold>
 
-        double[][] mA = {{1, -2,0,0,3}, {2, -5 ,-3 ,-2 ,6}, {0, 5, 15, 10, 0}, {2, 6, 18, 8, 6}};
+        double[][] mA = {{1, -2,0,0}, {2, -5 ,-3 ,-2 }, {0, 5, 15, 10}, {2, 6, 18, 8}};
         Matrix m=new Matrix("m",mA);
-        //Matrix m1=Matrix.makeTransposeMatrix("m1",m);
-        //System.out.println(m);
-        m.gaus(true);
+
+        //Matrix m1=Matrix.powerOfMatrix("m1",m,10);
+        //System.out.println(m1);
+
+
 
 
         /*System.out.println(m1);
