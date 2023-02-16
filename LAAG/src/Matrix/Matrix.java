@@ -73,21 +73,10 @@ public class Matrix {
         }
         return maxCoordinate;
     }
-    public int getNumOfRows(){
-        return matrix.length;
-    }
-    public int getNumOfColumns(){
-        return matrix[0].length;
-    }
-
-    public double[][] getMatrix() {
-        return matrix;
-    }
-
-    public double[] returnColumn(int column){
+    public double[] returnLastColumn(){
         double[] out=new double[matrix.length];
         for (int i = 0; i < out.length; i++) {
-            out[i]=matrix[i][column];
+            out[i]=matrix[i][matrix.length-1];
         }
         if (!isMatrixConsistent()){
             return null;
@@ -167,7 +156,7 @@ public class Matrix {
             }
             column++;
         }
-        matrixIn3d(m);
+        //matrixIn3d(m);
         row = findTheVectorWithMostZeros().getX();
         column = findTheVectorWithMostZeros().getY();
         if (row==-1){
@@ -252,15 +241,19 @@ public class Matrix {
     }
 
     public static Matrix makeTransposeMatrix(String name, Matrix a) {
-        double[][] temp = new double[a.matrix[0].length][a.matrix.length];
+        double[][] temp = new double[a.matrix.length][a.matrix.length];
         for (int i = 0; i < temp.length; i++) {
-            for (int j = 0; j < temp[0].length; j++) {
+            for (int j = 0; j < temp.length; j++) {
                 temp[i][j] = a.matrix[j][i];
             }
         }
         Matrix output = new Matrix(name, temp);
         return output;
     }
+
+    /*public static  CMatrix makeAdjoinMatrix(CMatrix a){
+
+    }*/
 
     public static Matrix invertedMatrix(String name, Matrix a) {
         Matrix input = Matrix.addIdentityMatrix(name, a);
@@ -275,49 +268,37 @@ public class Matrix {
         return output;
     }
 
-    public boolean areMatricesSame(Matrix a,Matrix b){
-        for (int i = 0; i < a.matrix.length; i++) {
-            for (int j = 0; j < a.matrix[0].length; j++) {
-                if(a.matrix[i][j]!=b.matrix[i][j]){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     //</editor-fold>
 
 
     //<editor-fold desc="GAUS-JORDAN">
-    public void gaus(boolean printOutput) {
+    public void gaus(boolean ispis) {
         makeEmptyRowsOnBottom();
-        if (printOutput){
-            System.out.println(this);
-        }
         for (int i = 0; i < matrix.length - numberOfEmptyRows; i++) {
-            Matrix temp=this;
+            if (ispis){
+                System.out.println(this);
+            }
+
             makeLeadingOneOnTop(i);
-            if (!areMatricesSame(temp,this)&&printOutput){
+            if (ispis){
                 System.out.println(this);
             }
             makeLeadingOnesOne(i);
-            if (!areMatricesSame(temp,this)&&printOutput){
+            if (ispis){
                 System.out.println(this);
             }
-            makeNonZerosBeneathLeadingOneZeros(i,printOutput);
-
+            makeNonZerosBeneathLeadingOneZeros(i);
+            if (ispis){
+                System.out.println(this);
+            }
             makeEmptyRowsOnBottom();
-        }
-        if (printOutput){
-            System.out.println(this);
         }
     }
 
-    public void gausJordan(boolean printOutput) {
-        gaus(printOutput);
+    public void gausJordan(boolean ispis) {
+        gaus(ispis);
         for (int i = matrix.length - 1 - numberOfEmptyRows; i >= 0; i--) {
-            makeNonZerosAboveLeadingOneZero(i,printOutput);
+            makeNonZerosAboveLeadingOneZero(i,ispis);
             makeEmptyRowsOnBottom();
         }
     }
@@ -355,16 +336,13 @@ public class Matrix {
         return new Cordinates(-1, 0);
     }
 
-    private void makeNonZerosBeneathLeadingOneZeros(int subMatrixLevel,boolean printOutput) {
+    private void makeNonZerosBeneathLeadingOneZeros(int subMatrixLevel) {
         while (findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
             rowOperation(
                     subMatrixLevel,
                     -matrix[findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
                     findNonZerosBeneathLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
             );
-            if (printOutput){
-                System.out.println(this);
-            }
         }
     }
 
@@ -378,14 +356,14 @@ public class Matrix {
     }
 
 
-    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel,boolean printOutput) {
+    public void makeNonZerosAboveLeadingOneZero(int subMatrixLevel,boolean ispis) {
         while (findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY()) != Integer.MAX_VALUE) {
             rowOperation(
                     subMatrixLevel,
                     -matrix[findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())][findLeadingOne(subMatrixLevel).getY()],
                     findNonZerosAboveLeadingOne(subMatrixLevel, findLeadingOne(subMatrixLevel).getY())
             );
-            if (printOutput){
+            if (ispis){
                 System.out.println(this);
             }
         }
@@ -439,10 +417,7 @@ public class Matrix {
         stringBuilder.append(name + "=\n{\n");
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
-                if(matrix[i][j]==-0.0){
-                    matrix[i][j]=0;
-                }
-                stringBuilder.append("\t" + String.format("%4.1f ", matrix[i][j]));
+                stringBuilder.append("\t" + String.format("%6.3f ", matrix[i][j]));
             }
 
             stringBuilder.append("\n");

@@ -21,7 +21,7 @@ public class Line {
         this.vector.setTerminalCoordinates(this.vector.getCoordinatesRelativeToOrigin());
         this.vector.setInitialCoordinates(new double[point1.getCoordinates().length]);
     }
-
+    //fill matrix - makes system of 2 equations for two lines
     private static double[][] fillMatrix(Line line1, Line line2){
         double[][] matrix=new double[line1.point.getCoordinates().length][line1.point.getCoordinates().length];
         for (int i = 0; i < line1.point.getCoordinates().length; i++) {
@@ -39,10 +39,10 @@ public class Line {
         Matrix m=new Matrix("",fillMatrix(line1, line2));
         m.gausJordan(false);
         Point out=new Point("Common Point Between "+line1.name+" and "+line2.name,new double[line1.point.getCoordinates().length]);
-        if (m.returnColumn(m.getNumOfColumns()-1)==null){
+        if (m.returnLastColumn()==null){
             return null;
         }else{
-            out.setCoordinates(m.returnColumn(m.getNumOfColumns()-1));
+            out.setCoordinates(m.returnLastColumn());
         }
         return out;
     }
@@ -95,12 +95,7 @@ public class Line {
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append(name+":\n");
         for (int i = 0; i < point.getCoordinates().length; i++) {
-            if (vector.getCoordinatesRelativeToOrigin()[i]<0){
-                stringBuilder.append(Character.toString(88+i)+" = "+point.getCoordinates()[i]+" - "+Math.abs(vector.getCoordinatesRelativeToOrigin()[i]) +"t\n");
-            }else{
-                stringBuilder.append(Character.toString(88+i)+" = "+point.getCoordinates()[i]+" + "+vector.getCoordinatesRelativeToOrigin()[i]+"t\n");
-            }
-
+            stringBuilder.append(Character.toString(88+i)+" = "+point.getCoordinates()[i]+" + t"+vector.getCoordinatesRelativeToOrigin()[i]+"\n");
         }
         return stringBuilder.toString();
     }
